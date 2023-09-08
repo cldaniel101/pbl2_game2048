@@ -58,15 +58,16 @@ def transpor():
 
 def add_nova_peca():
     global matriz
-    row = random.randint(0, 3)
-    col = random.randint(0, 3)
-    while(matriz[row][col] != 0):
+    if any(0 in row for row in matriz):
         row = random.randint(0, 3)
         col = random.randint(0, 3)
-    if random.random() < 0.9:
-        matriz[row][col] = 2
-    else:
-        matriz[row][col] = 4
+        while(matriz[row][col] != 0):
+            row = random.randint(0, 3)
+            col = random.randint(0, 3)
+        if random.random() < 0.9:
+            matriz[row][col] = 2
+        else:
+            matriz[row][col] = 4
 
 def mostra_a_matriz():
     global matriz
@@ -75,12 +76,39 @@ def mostra_a_matriz():
     for row in range(4):
         print(matriz[row])
 
+def horizontal_move_exists():
+    global matriz
+    for row in range(4):
+        for col in range(3):
+            if matriz[row][col] == matriz[row][col + 1]:
+                return True
+    return False
+
+def vertical_move_exists():
+    global matriz
+    for row in range(3):
+        for col in range(4):
+            if matriz[row][col] == matriz[row + 1][col]:
+                return True
+    return False
+
+def fim_de_jogo():
+    global matriz
+    global parar
+    if any(2048 in row for row in matriz):
+        print("VITÓRIA !!")
+        parar = False
+    elif not any(0 in row for row in matriz) and not horizontal_move_exists() and not vertical_move_exists():
+        print("VOCÊ PERDEU !!")
+        parar = False
+
 def esquerda():
     empilhar()
     combinar()
     empilhar()
     add_nova_peca()
     mostra_a_matriz()
+    fim_de_jogo()
 
 def direita():
     reverter()
@@ -90,6 +118,7 @@ def direita():
     reverter()
     add_nova_peca()
     mostra_a_matriz()
+    fim_de_jogo()
 
 def cima():
     transpor()
@@ -99,6 +128,7 @@ def cima():
     transpor()
     add_nova_peca()
     mostra_a_matriz()
+    fim_de_jogo()
 
 
 
@@ -112,6 +142,7 @@ def baixo():
     transpor()
     add_nova_peca()
     mostra_a_matriz()
+    fim_de_jogo()
 
 start_game()
 
@@ -128,6 +159,3 @@ while parar:
         baixo()
     elif escolha == 'sair':
         parar = False
-    
-
-
