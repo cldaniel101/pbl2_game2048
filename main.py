@@ -1,4 +1,8 @@
 import random
+import os
+if os.name == 'nt':
+    import msvcrt
+
 
 score = 0
 
@@ -15,8 +19,13 @@ def start_game():
         col = random.randint(0, 3)
     matriz[row][col] = 2
 
-    mostra_a_matriz()
+    print("""
+    BOTÕES: 
+    ↓ ← → ↑ - Teclas de Direção
+    q - Finaliza o Jogo
+    """)
 
+    mostra_a_matriz()
 
 def empilhar():
     global matriz
@@ -102,7 +111,16 @@ def fim_de_jogo():
         print("VOCÊ PERDEU !!")
         parar = False
 
+def limpar_terminal():
+    # Verifica se o sistema operacional é Windows
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        # Limpa o terminal em sistemas não-Windows (Linux, macOS, etc.)
+        os.system('clear')
+
 def esquerda():
+    limpar_terminal()
     empilhar()
     combinar()
     empilhar()
@@ -111,6 +129,7 @@ def esquerda():
     fim_de_jogo()
 
 def direita():
+    limpar_terminal()
     reverter()
     empilhar()
     combinar()
@@ -121,6 +140,7 @@ def direita():
     fim_de_jogo()
 
 def cima():
+    limpar_terminal()
     transpor()
     empilhar()
     combinar()
@@ -129,10 +149,9 @@ def cima():
     add_nova_peca()
     mostra_a_matriz()
     fim_de_jogo()
-
-
 
 def baixo():
+    limpar_terminal()
     transpor()
     reverter()
     empilhar()
@@ -143,19 +162,37 @@ def baixo():
     add_nova_peca()
     mostra_a_matriz()
     fim_de_jogo()
+
+# Comandos em sistemas não-Windows (Linux, macOS, etc.)
+# def linux_mac():
+#     parar = True
+#     while parar:
+#         if $'\e[A':
+#             print(f"Tecla pressionada: {event.name}")
+#         else:
+#             parar = False
+
+# Comandos para Windows
+def windows():
+    key = msvcrt.getch()
+    while parar:
+        if key == b'q': 
+            parar = False  # Sair do loop se 'q' for pressionado
+        elif key == b'\xe0':
+            key = msvcrt.getch()
+            if key == b'H':
+                cima()
+            elif key == b'P':
+                baixo()
+            elif key == b'M':
+                direita()
+            elif key == b'K':
+                esquerda()
+
 
 start_game()
 
-parar = True
-while parar:
-    escolha = input("> ")
-    if escolha == 'a':
-        esquerda()
-    elif escolha == 'd':
-        direita()
-    elif escolha == 'w':
-        cima()
-    elif escolha == 's':
-        baixo()
-    elif escolha == 'sair':
-        parar = False
+if os.name == 'nt':
+    windows()
+else:
+    pass
