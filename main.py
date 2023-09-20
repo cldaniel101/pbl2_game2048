@@ -3,7 +3,6 @@ import os
 if os.name == 'nt':
     import msvcrt
 
-
 score = 0
 
 def start_game():
@@ -164,13 +163,23 @@ def baixo():
     fim_de_jogo()
 
 # Comandos em sistemas não-Windows (Linux, macOS, etc.)
-# def linux_mac():
-#     parar = True
-#     while parar:
-#         if $'\e[A':
-#             print(f"Tecla pressionada: {event.name}")
-#         else:
-#             parar = False
+def linux_mac():
+    parar = True
+    while parar:
+        print("\n[a] - Esquerda; [d] - Direita; [s] - Baixo; [w] - Cima \n[sair] - Finalizar Jogo")
+        tecla = input(">>> ")
+        if tecla == 's':
+            baixo()
+        elif tecla == 'w':
+            cima()
+        elif tecla == 'a':
+            esquerda()
+        elif tecla == 'd':
+            direita()
+        elif tecla == "sair":
+            parar = False
+        else:
+            print("\033[1;30;31mTecla Inválida\033[0m")
 
 # Comandos para Windows
 def windows():
@@ -195,4 +204,4 @@ start_game()
 if os.name == 'nt':
     windows()
 else:
-    pass
+    linux_mac()
