@@ -1,1 +1,5 @@
 recorde.txt
+dist 
+build
+*.zip
+__pycache__/
