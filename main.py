@@ -2,8 +2,6 @@ import tkinter as tk
 import random
 import cores
 
-score = 0
-
 class Jogo(tk.Frame):
     def __init__(self):
         tk.Frame.__init__(self)  # construtor do Tkinter para inicializar a janela
@@ -11,15 +9,15 @@ class Jogo(tk.Frame):
         self.master.title('2048')  # título da janela
 
         # Aqui, está sendo criado um quadro principal dentro da janela e colocando na grade principal
-        self.main_grid = tk.Frame(
+        self.grade_principal = tk.Frame(
             self, bg=cores.COR_GRADE, bd=3, width=400, height=400) 
-        self.main_grid.grid(pady=(80, 0)) 
+        self.grade_principal.grid(pady=(80, 0)) 
 
         # cria a interface gráfica e inicia o jogo
         self.criar_Interface()
         self.start_game()
 
-        # controlar o movimento das peças 
+        # controla o movimento das peças 
         self.master.bind("<Left>", self.esquerda)
         self.master.bind("<Right>", self.direita)
         self.master.bind("<Up>", self.cima)
@@ -32,29 +30,29 @@ class Jogo(tk.Frame):
     def criar_Interface(self):
         self.celulas = []
         for i in range(4):
-            row = []
+            linha = []
             for j in range(4):
                 quadrado_celula = tk.Frame(
-                    self.main_grid,
+                    self.grade_principal,
                     bg=cores.COR_CELULA_VAZIA,
                     width=100,
                     height=100)
                 quadrado_celula.grid(row=i, column=j, padx=5, pady=5)
-                cell_number = tk.Label(self.main_grid, bg=cores.COR_CELULA_VAZIA)
-                cell_number.grid(row=i, column=j)
-                cell_data = {"frame": quadrado_celula, "number": cell_number}
-                row.append(cell_data)
-            self.celulas.append(row)
+                numero_da_celula = tk.Label(self.grade_principal, bg=cores.COR_CELULA_VAZIA)
+                numero_da_celula.grid(row=i, column=j)
+                celula = {"frame": quadrado_celula, "number": numero_da_celula}
+                linha.append(celula)
+            self.celulas.append(linha)
 
-        score_frame = tk.Frame(self)
-        score_frame.place(relx=0.5, y=40, anchor="center")
+        frame_do_score = tk.Frame(self)
+        frame_do_score.place(relx=0.5, y=40, anchor="center")
         tk.Label(
-            score_frame,
+            frame_do_score,
             text="Score",
             font=cores.FONTE_ROTULO_PONTUACAO).grid(
             row=0)
-        self.score_label = tk.Label(score_frame, text="0", font=cores.FONTE_PONTUACAO)
-        self.score_label.grid(row=1)
+        self.legenda_score = tk.Label(frame_do_score, text="0", font=cores.FONTE_PONTUACAO)
+        self.legenda_score.grid(row=1)
 
     def start_game(self):
         self.matriz = [[0] * 4 for _ in range(4)]
@@ -133,20 +131,20 @@ class Jogo(tk.Frame):
     def atualizar_Interface(self):
         for i in range(4):
             for j in range(4):
-                cell_value = self.matriz[i][j]
-                if cell_value == 0:
+                valor_da_celula = self.matriz[i][j]
+                if valor_da_celula == 0:
                     self.celulas[i][j]["frame"].configure(bg=cores.COR_CELULA_VAZIA)
                     self.celulas[i][j]["number"].configure(
                         bg=cores.COR_CELULA_VAZIA, text="")
                 else:
                     self.celulas[i][j]["frame"].configure(
-                        bg=cores.CORES_CELULA[cell_value])
+                        bg=cores.CORES_CELULA[valor_da_celula])
                     self.celulas[i][j]["number"].configure(
-                        bg=cores.CORES_CELULA[cell_value],
-                        fg=cores.CORES_NUMERO_CELULA[cell_value],
-                        font=cores.FONTE_NUMERO_CELULA[cell_value],
-                        text=str(cell_value))
-        self.score_label.configure(text=self.score)
+                        bg=cores.CORES_CELULA[valor_da_celula],
+                        fg=cores.CORES_NUMERO_CELULA[valor_da_celula],
+                        font=cores.FONTE_NUMERO_CELULA[valor_da_celula],
+                        text=str(valor_da_celula))
+        self.legenda_score.configure(text=self.score)
         self.update_idletasks()
 
     def esquerda(self, event):
@@ -189,14 +187,14 @@ class Jogo(tk.Frame):
         self.atualizar_Interface()
         self.fim_de_jogo()
 
-    def horizontal_move_exists(self):
+    def existe_mov_horizontal(self):
         for row in range(4):
             for col in range(3):
                 if self.matriz[row][col] == self.matriz[row][col + 1]:
                     return True
         return False
 
-    def vertical_move_exists(self):
+    def existe_mov_vertical(self):
         for row in range(3):
             for col in range(4):
                 if self.matriz[row][col] == self.matriz[row + 1][col]:
@@ -205,19 +203,19 @@ class Jogo(tk.Frame):
 
     def fim_de_jogo(self):
         if any(2048 in row for row in self.matriz):
-            game_over_frame = tk.Frame(self.main_grid, borderwidth=2)
-            game_over_frame.place(relx=0.5, rely=0.5, anchor="center")
+            frame_fim_de_jogo = tk.Frame(self.grade_principal, borderwidth=2)
+            frame_fim_de_jogo.place(relx=0.5, rely=0.5, anchor="center")
             tk.Label(
-                game_over_frame,
+                frame_fim_de_jogo,
                 text="VITÓRIA!",
                 bg=cores.FUNDO_VENCEDOR,
                 fg=cores.COR_FONTE_FIM_DE_JOGO,
                 font=cores.FONTE_FIM_DE_JOGO).pack()
-        elif not any(0 in row for row in self.matriz) and not self.horizontal_move_exists() and not self.vertical_move_exists():
-            game_over_frame = tk.Frame(self.main_grid, borderwidth=2)
-            game_over_frame.place(relx=0.5, rely=0.5, anchor="center")
+        elif not any(0 in row for row in self.matriz) and not self.existe_mov_horizontal() and not self.existe_mov_vertical():
+            frame_fim_de_jogo = tk.Frame(self.grade_principal, borderwidth=2)
+            frame_fim_de_jogo.place(relx=0.5, rely=0.5, anchor="center")
             tk.Label(
-                game_over_frame,
+                frame_fim_de_jogo,
                 text="DERROTA!",
                 bg=cores.FUNDO_PERDEDOR,
                 fg=cores.COR_FONTE_FIM_DE_JOGO,
