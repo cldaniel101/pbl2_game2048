@@ -26,7 +26,6 @@ class Jogo(tk.Frame):
         # Mantém o jogo aberto até que a janela seja fechada
         self.mainloop()
 
-
     def criar_Interface(self):
         self.celulas = []
         for i in range(4):
@@ -81,6 +80,10 @@ class Jogo(tk.Frame):
             text="2")
 
         self.score = 0
+        self.jogadas = 0
+
+        # self.add_2048_win()
+        # self.add_defeat()
 
 
     def empilhar(self):
@@ -151,8 +154,10 @@ class Jogo(tk.Frame):
         self.empilhar()
         self.combinar()
         self.empilhar()
+        self.jogadas += 1
         self.add_nova_peca()
         self.atualizar_Interface()
+        # self.add_defeat()
         self.fim_de_jogo()
 
     def direita(self, event):
@@ -161,6 +166,7 @@ class Jogo(tk.Frame):
         self.combinar()
         self.empilhar()
         self.reverter()
+        self.jogadas += 1
         self.add_nova_peca()
         self.atualizar_Interface()
         self.fim_de_jogo()
@@ -171,6 +177,7 @@ class Jogo(tk.Frame):
         self.combinar()
         self.empilhar()
         self.transpor()
+        self.jogadas += 1
         self.add_nova_peca()
         self.atualizar_Interface()
         self.fim_de_jogo()
@@ -183,9 +190,23 @@ class Jogo(tk.Frame):
         self.empilhar()
         self.reverter()
         self.transpor()
+        self.jogadas += 1
         self.add_nova_peca()
         self.atualizar_Interface()
         self.fim_de_jogo()
+
+    # def add_2048_win(self):
+    #     empty_cells = [(i, j) for i in range(4) for j in range(4) if self.matriz[i][j] == 0]
+        
+    #     if empty_cells:
+    #         row, col = random.choice(empty_cells)
+    #         self.matriz[row][col] = 2048
+
+    # def add_defeat(self):
+    #     self.matriz[0] = [2, 4, 8, 16]
+    #     self.matriz[1] = [32, 64, 128, 256]
+    #     self.matriz[2] = [512, 1024, 2, 4]
+    #     self.matriz[3] = [8, 16, 32, 64]
 
     def existe_mov_horizontal(self):
         for row in range(4):
@@ -200,25 +221,79 @@ class Jogo(tk.Frame):
                 if self.matriz[row][col] == self.matriz[row + 1][col]:
                     return True
         return False
+    
+    def mostra_jogadas_e_recorde(self):
+        # Mostra o Score Final
+        frame_pontuacao = tk.Frame(self.grade_principal, borderwidth=2)
+        frame_pontuacao.place(relx=0.5, rely=0.4, anchor="center")
+        tk.Label(
+            frame_pontuacao,
+            text=f"Score: {self.score}",
+            bg=cores.FUNDO_PONTUACAO,
+            fg=cores.COR_FONTE_FIM_DE_JOGO,
+            font=cores.FONTE_PONTUACAO).pack()
+        
+        # Mostra a quantidade de jogadas
+        frame_jogadas = tk.Frame(self.grade_principal, borderwidth=2)
+        frame_jogadas.place(relx=0.5, rely=0.6, anchor="center")
+        tk.Label(
+            frame_jogadas,
+            text=f"Jogadas: {self.jogadas}",
+            bg=cores.FUNDO_JOGADAS_RECORDE,
+            fg=cores.COR_FONTE_FIM_DE_JOGO,
+            font=cores.FONTE_JOGADAS_RECORDE).pack()
+        
+        # Mostra o recorde
+        frame_recorde = tk.Frame(self.grade_principal, borderwidth=2)
+        frame_recorde.place(relx=0.5, rely=0.7, anchor="center")
+        tk.Label(
+            frame_recorde,
+            text=f"Recorde: {self.ler_recorde()}",
+            bg=cores.FUNDO_JOGADAS_RECORDE,
+            fg=cores.COR_FONTE_FIM_DE_JOGO,
+            font=cores.FONTE_JOGADAS_RECORDE).pack()
+        
+    def ler_recorde(self):
+        try:
+            with open("recorde.txt", "r") as arquivo:
+                recorde = int(arquivo.read())
+            return recorde
+        except FileNotFoundError:
+            recorde = 0
+            with open("recorde.txt", "w") as arquivo:
+                arquivo.write(str(recorde))
+            return recorde
+        
+    def verifica_recorde(self):
+        recorde = self.ler_recorde()
+        
+        if self.score > recorde:
+            with open("recorde.txt", "w") as arquivo:
+                arquivo.write(str(self.score))
+
 
     def fim_de_jogo(self):
         if any(2048 in row for row in self.matriz):
             frame_fim_de_jogo = tk.Frame(self.grade_principal, borderwidth=2)
-            frame_fim_de_jogo.place(relx=0.5, rely=0.5, anchor="center")
+            frame_fim_de_jogo.place(relx=0.5, rely=0.20, anchor="center")
             tk.Label(
                 frame_fim_de_jogo,
                 text="VITÓRIA!",
                 bg=cores.FUNDO_VENCEDOR,
                 fg=cores.COR_FONTE_FIM_DE_JOGO,
                 font=cores.FONTE_FIM_DE_JOGO).pack()
+            self.verifica_recorde()
+            self.mostra_jogadas_e_recorde()
         elif not any(0 in row for row in self.matriz) and not self.existe_mov_horizontal() and not self.existe_mov_vertical():
             frame_fim_de_jogo = tk.Frame(self.grade_principal, borderwidth=2)
-            frame_fim_de_jogo.place(relx=0.5, rely=0.5, anchor="center")
+            frame_fim_de_jogo.place(relx=0.5, rely=0.20, anchor="center")
             tk.Label(
                 frame_fim_de_jogo,
                 text="DERROTA!",
                 bg=cores.FUNDO_PERDEDOR,
                 fg=cores.COR_FONTE_FIM_DE_JOGO,
                 font=cores.FONTE_FIM_DE_JOGO).pack()
-            
+            self.verifica_recorde()
+            self.mostra_jogadas_e_recorde()
+
 Jogo()

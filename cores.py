@@ -3,7 +3,11 @@ COR_CELULA_VAZIA = "#c2b3a9"
 FONTE_ROTULO_PONTUACAO = ("Verdana", 20)
 FONTE_PONTUACAO = ("Helvetica", 32, "bold")
 FONTE_FIM_DE_JOGO = ("Helvetica", 48, "bold")
+FONTE_PONTUACAO = ("Helvetica", 40, "bold")
+FONTE_JOGADAS_RECORDE = ("Helvetica", 20, "normal")
 COR_FONTE_FIM_DE_JOGO = "#ffffff"
+FUNDO_PONTUACAO = "#4476FC"
+FUNDO_JOGADAS_RECORDE = "#A749E6"
 FUNDO_VENCEDOR = "#ffcc00"
 FUNDO_PERDEDOR = "#a39489"
 
@@ -42,9 +46,9 @@ FONTE_NUMERO_CELULA = {
     16: ("Helvetica", 50, "bold"),
     32: ("Helvetica", 50, "bold"),
     64: ("Helvetica", 50, "bold"),
-    128: ("Helvetica", 45, "bold"),
-    256: ("Helvetica", 45, "bold"),
-    512: ("Helvetica", 45, "bold"),
-    1024: ("Helvetica", 40, "bold"),
-    2048: ("Helvetica", 40, "bold")
+    128: ("Helvetica", 40, "bold"),
+    256: ("Helvetica", 40, "bold"),
+    512: ("Helvetica", 40, "bold"),
+    1024: ("Helvetica", 30, "bold"),
+    2048: ("Helvetica", 30, "bold")
 }
