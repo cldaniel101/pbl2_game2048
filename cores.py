@@ -1,9 +1,9 @@
 COR_GRADE = "#a39489"
 COR_CELULA_VAZIA = "#c2b3a9"
 FONTE_ROTULO_PONTUACAO = ("Verdana", 20)
-FONTE_PONTUACAO = ("Helvetica", 32, "bold")
+FONTE_PONTUACAO = ("Helvetica", 25, "bold")
 FONTE_FIM_DE_JOGO = ("Helvetica", 48, "bold")
-FONTE_PONTUACAO = ("Helvetica", 40, "bold")
+FONTE_PONTUACAO_FINAL = ("Helvetica", 40, "bold")
 FONTE_JOGADAS_RECORDE = ("Helvetica", 20, "normal")
 COR_FONTE_FIM_DE_JOGO = "#ffffff"
 FUNDO_PONTUACAO = "#4476FC"

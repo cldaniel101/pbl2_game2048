@@ -157,7 +157,6 @@ class Jogo(tk.Frame):
         self.jogadas += 1
         self.add_nova_peca()
         self.atualizar_Interface()
-        # self.add_defeat()
         self.fim_de_jogo()
 
     def direita(self, event):
@@ -195,18 +194,18 @@ class Jogo(tk.Frame):
         self.atualizar_Interface()
         self.fim_de_jogo()
 
-    # def add_2048_win(self):
-    #     empty_cells = [(i, j) for i in range(4) for j in range(4) if self.matriz[i][j] == 0]
+    def add_2048_win(self):
+        empty_cells = [(i, j) for i in range(4) for j in range(4) if self.matriz[i][j] == 0]
         
-    #     if empty_cells:
-    #         row, col = random.choice(empty_cells)
-    #         self.matriz[row][col] = 2048
+        if empty_cells:
+            row, col = random.choice(empty_cells)
+            self.matriz[row][col] = 2048
 
-    # def add_defeat(self):
-    #     self.matriz[0] = [2, 4, 8, 16]
-    #     self.matriz[1] = [32, 64, 128, 256]
-    #     self.matriz[2] = [512, 1024, 2, 4]
-    #     self.matriz[3] = [8, 16, 32, 64]
+    def add_defeat(self):
+        self.matriz[0] = [2, 4, 8, 16]
+        self.matriz[1] = [32, 64, 128, 256]
+        self.matriz[2] = [512, 1024, 2, 4]
+        self.matriz[3] = [8, 16, 32, 64]
 
     def existe_mov_horizontal(self):
         for row in range(4):
@@ -231,7 +230,7 @@ class Jogo(tk.Frame):
             text=f"Score: {self.score}",
             bg=cores.FUNDO_PONTUACAO,
             fg=cores.COR_FONTE_FIM_DE_JOGO,
-            font=cores.FONTE_PONTUACAO).pack()
+            font=cores.FONTE_PONTUACAO_FINAL).pack()
         
         # Mostra a quantidade de jogadas
         frame_jogadas = tk.Frame(self.grade_principal, borderwidth=2)
@@ -252,6 +251,24 @@ class Jogo(tk.Frame):
             bg=cores.FUNDO_JOGADAS_RECORDE,
             fg=cores.COR_FONTE_FIM_DE_JOGO,
             font=cores.FONTE_JOGADAS_RECORDE).pack()
+    
+
+    def reiniciar(self):
+        self.master.destroy()
+        Jogo()
+
+    def botao_reiniciar(self):
+        frame_reiniciar = tk.Frame(self.grade_principal, borderwidth=2)
+        frame_reiniciar.place(relx=0.5, rely=0.85, anchor="center")
+        tk.Button(
+            frame_reiniciar, 
+            text="Reiniciar", 
+            bg="#5E12E6",
+            fg=cores.COR_FONTE_FIM_DE_JOGO,
+            font=cores.FONTE_JOGADAS_RECORDE,
+            command=self.reiniciar
+            ).pack()
+        
         
     def ler_recorde(self):
         try:
@@ -284,6 +301,7 @@ class Jogo(tk.Frame):
                 font=cores.FONTE_FIM_DE_JOGO).pack()
             self.verifica_recorde()
             self.mostra_jogadas_e_recorde()
+            self.botao_reiniciar()
         elif not any(0 in row for row in self.matriz) and not self.existe_mov_horizontal() and not self.existe_mov_vertical():
             frame_fim_de_jogo = tk.Frame(self.grade_principal, borderwidth=2)
             frame_fim_de_jogo.place(relx=0.5, rely=0.20, anchor="center")
@@ -295,5 +313,6 @@ class Jogo(tk.Frame):
                 font=cores.FONTE_FIM_DE_JOGO).pack()
             self.verifica_recorde()
             self.mostra_jogadas_e_recorde()
+            self.botao_reiniciar()
 
 Jogo()
