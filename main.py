@@ -197,7 +197,8 @@ def windows():
                 direita()
             elif key == b'K':
                 esquerda()
-
+            else:
+                print("\033[1;30;31mTecla Inválida\033[0m")
 
 start_game()
 
