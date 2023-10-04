@@ -1,3 +1,14 @@
+"""
+Autor: Cláudio Daniel Figueredo Peruna
+Componente Curricular: EXA 854 - MI - Algoritmos
+ConcluÍdo em: 03/10/2023
+Declaro que este código foi elaborado por mim de forma individual e não contém nenhum
+trecho de código de outro colega ou de outro autor, tais como provindos de livros e
+apostilas, e páginas ou documentos eletrônicos da Internet. Qualquer trecho de código
+de outra autoria que não a minha está destacado com uma citação para o autor e a fonte
+do código, e estou ciente que estes trechos não serão considerados para fins de avaliação.
+"""
+
 import tkinter as tk
 import random
 import cores
@@ -62,6 +73,31 @@ class Jogo(tk.Frame):
         # Cria um rótulo para exibir a pontuação atual
         self.legenda_score = tk.Label(frame_do_score, text="0", font=cores.FONTE_PONTUACAO)
         self.legenda_score.grid(row=1)
+
+    def atualizar_Interface(self):
+        for i in range(4):
+            for j in range(4):
+                valor_da_celula = self.matriz[i][j]
+
+                if valor_da_celula == 0:
+                    # Configura a cor de fundo da célula como vazia (background)
+                    self.celulas[i][j]["frame"].configure(bg=cores.COR_CELULA_VAZIA)
+                    # Remove o texto da célula
+                    self.celulas[i][j]["number"].configure(bg=cores.COR_CELULA_VAZIA, text="")
+                else:
+                    # Configura a cor de fundo da célula com base no valor da célula
+                    self.celulas[i][j]["frame"].configure(bg=cores.CORES_CELULA[valor_da_celula])
+                    # Configura a cor do texto, a fonte e o texto da célula com base no valor da célula
+                    self.celulas[i][j]["number"].configure(
+                        bg=cores.CORES_CELULA[valor_da_celula],
+                        fg=cores.CORES_NUMERO_CELULA[valor_da_celula],
+                        font=cores.FONTE_NUMERO_CELULA[valor_da_celula],
+                        text=str(valor_da_celula))
+        
+        # Atualiza o rótulo da pontuação (score) com a pontuação atual
+        self.legenda_score.configure(text=self.score)
+        # Atualiza a interface gráfica
+        self.update_idletasks()
 
 
     def start_game(self):
@@ -175,31 +211,6 @@ class Jogo(tk.Frame):
             else:
                 self.matriz[row][col] = 4
 
-
-    def atualizar_Interface(self):
-        for i in range(4):
-            for j in range(4):
-                valor_da_celula = self.matriz[i][j]
-
-                if valor_da_celula == 0:
-                    # Configura a cor de fundo da célula como vazia (background)
-                    self.celulas[i][j]["frame"].configure(bg=cores.COR_CELULA_VAZIA)
-                    # Remove o texto da célula
-                    self.celulas[i][j]["number"].configure(bg=cores.COR_CELULA_VAZIA, text="")
-                else:
-                    # Configura a cor de fundo da célula com base no valor da célula
-                    self.celulas[i][j]["frame"].configure(bg=cores.CORES_CELULA[valor_da_celula])
-                    # Configura a cor do texto, a fonte e o texto da célula com base no valor da célula
-                    self.celulas[i][j]["number"].configure(
-                        bg=cores.CORES_CELULA[valor_da_celula],
-                        fg=cores.CORES_NUMERO_CELULA[valor_da_celula],
-                        font=cores.FONTE_NUMERO_CELULA[valor_da_celula],
-                        text=str(valor_da_celula))
-        
-        # Atualiza o rótulo da pontuação (score) com a pontuação atual
-        self.legenda_score.configure(text=self.score)
-        # Atualiza a interface gráfica
-        self.update_idletasks()
 
 
     # MOVIMENTOS
@@ -344,7 +355,6 @@ class Jogo(tk.Frame):
 
     # def add_2048_win(self):
     #     empty_cells = [(i, j) for i in range(4) for j in range(4) if self.matriz[i][j] == 0]
-        
     #     if empty_cells:
     #         row, col = random.choice(empty_cells)
     #         self.matriz[row][col] = 2048
