@@ -1,33 +1,31 @@
-# Jogo 2048 no Terminal
+# Jogo 2048 em Python
 
+**Jogo 2048** é uma implementação em Python do popular jogo de quebra-cabeça 2048. O objetivo do jogo é combinar blocos com números iguais para alcançar o número 2048.
 
-Este é um projeto de implementação do famoso jogo 2048 no terminal usando Python. O objetivo deste projeto é criar uma versão funcional do jogo 2048 que pode ser jogada diretamente no terminal.
+<div align="center">
+  <img src="https://i.imgur.com/iXmNnlS.png" alt="2048" width="193px" height="244px">
+</div>
 
-## Requisitos
+## Pré-requisitos
 
-Antes de começar, verifique se você tem os seguintes requisitos instalados:
-
-- Python 3.11.5
+- Python 3.7 ou superior
+- Biblioteca Tkinter (geralmente incluída com a instalação padrão do Python)
 
 ## Como Jogar
 
 1. Clone este repositório em sua máquina local usando o seguinte comando:
+   ```bash
+   git clone https://github.com/cldaniel101/pbl2_game2048.git
 
 2. Navegue até o diretório do projeto:
-cd jogo-2048-terminal
+cd pbl2_game2048
 
 3. Inicie o jogo:
-python 2048.py
+python3 main.py
 
 4. Use as teclas de seta (cima, baixo, esquerda, direita) para mover as peças no tabuleiro e tente combinar números iguais para alcançar o número 2048.
 
 5. O jogo continuará até que você ganhe ou não possa mais fazer movimentos válidos.
-
-## Funcionalidades
-
-- Implementação completa do jogo 2048 no terminal.
-- Interface de usuário simples e intuitiva.
-- Sistema de pontuação para rastrear seu progresso.
 
 ## Contribuição
 Sinta-se à vontade para contribuir para este projeto. Se você tiver melhorias, correções de bugs ou novos recursos para adicionar, siga estas etapas:
